@@ -1,5 +1,9 @@
 package com.epam.mjc;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 public class MethodParser {
 
     /**
@@ -20,6 +24,36 @@ public class MethodParser {
      * @return {@link MethodSignature} object filled with parsed values from source string
      */
     public MethodSignature parseFunction(String signatureString) {
-        throw new UnsupportedOperationException("You should implement this method.");
+        List<String> list = new ArrayList<>();
+
+
+        StringTokenizer st1 = new StringTokenizer(signatureString, "()");
+
+        list.add(st1.nextToken());
+        list.add(st1.nextToken());
+
+
+        StringTokenizer st2 = new StringTokenizer(list.get(0), " ");
+
+        String returnType = st2.nextToken();
+
+        String nameMethod = st2.nextToken();
+
+        StringTokenizer st3 = new StringTokenizer(list.get(1), " ,");
+
+        List<String> list2 = new ArrayList<>();
+
+        while (st3.hasMoreTokens()){
+            list2.add(st3.nextToken());
+        }
+        List<MethodSignature.Argument> list3 = new ArrayList<>();
+        for(int i = 0;i<list2.size();i+=2){
+            list3.add(new MethodSignature.Argument(list2.get(i),list2.get(i+1)));
+        }
+
+        MethodSignature methodSignature = new MethodSignature(nameMethod,list3);
+        methodSignature.setAccessModifier(returnType);
+
+        return methodSignature;
     }
 }
